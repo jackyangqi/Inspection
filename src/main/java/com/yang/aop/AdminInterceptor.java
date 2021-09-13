@@ -19,6 +19,7 @@ public class AdminInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 		System.out.println("执行了TestInterceptor的preHandle方法");
 		String url = request.getRequestURI();
+		System.out.println("请求的地址："+url);
 		
 
 		return false;

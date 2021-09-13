@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yang.config.redisConfig.RedisUtil;
 import com.yang.config.token.TokenUtil;
 import com.yang.user.entity.User;
 import com.yang.user.service.IUserService;
@@ -20,6 +21,8 @@ import com.yang.user.service.IUserService;
 @Controller
 @RequestMapping("/user")
 public class UserController {
+	@Autowired
+	private RedisUtil redisUtil;
 
 	@Autowired
 	private IUserService service;
@@ -37,6 +40,7 @@ public class UserController {
 		User user = service.selectOneByAccount(username, password);
 		String currentTimeMillis = String.valueOf(System.currentTimeMillis());
 		String token = TokenUtil.sign(user.getUsername(), currentTimeMillis);
+		redisUtil.set("token", token);
 		return token;
 	}
 
