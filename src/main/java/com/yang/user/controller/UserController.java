@@ -1,10 +1,13 @@
 package com.yang.user.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSONObject;
 import com.yang.config.redisConfig.RedisUtil;
 import com.yang.config.token.TokenUtil;
 import com.yang.user.entity.User;
@@ -30,8 +33,8 @@ public class UserController {
 	@RequestMapping("/list")
 	@ResponseBody
 	public String list() {
-
-		return "[123]";
+		List<User> list = service.list();
+		return JSONObject.toJSONString(list);
 	}
 
 	@RequestMapping("/login")

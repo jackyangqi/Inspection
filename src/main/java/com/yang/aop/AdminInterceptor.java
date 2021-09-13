@@ -3,14 +3,20 @@ package com.yang.aop;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.yang.config.token.TokenUtil;
+
 @Component
 public class AdminInterceptor implements HandlerInterceptor {
+
+	public static final String TokenName = "Authorization";
 	
-	
+	@Autowired
+	private TokenUtil tokenUtil;
 
 	/**
 	 * 在请求处理之前进行调用（Controller方法调用之前）
@@ -19,9 +25,11 @@ public class AdminInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 		System.out.println("执行了TestInterceptor的preHandle方法");
 		String url = request.getRequestURI();
-		System.out.println("请求的地址："+url);
-		
-
+		System.out.println("请求的地址：" + url);
+		String token = getToken(request, response, handler);
+		System.out.println(token);
+		boolean b=  tokenUtil.verify(token);
+		System.out.println(b);
 		return false;
 	}
 
@@ -41,6 +49,15 @@ public class AdminInterceptor implements HandlerInterceptor {
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler,
 			Exception ex) {
 		System.out.println("执行了TestInterceptor的afterCompletion方法");
+	}
+
+	protected String getToken(HttpServletRequest httpRequest, HttpServletResponse httpResponse, Object handler) {
+		// 拿到当前Header中Authorization的AccessToken(Shiro中getAuthzHeader方法已经实现)
+		String token = httpRequest.getHeader(TokenName);
+		if (token == null) {
+			token = httpRequest.getParameter(TokenName);
+		}
+		return token;
 	}
 
 }
