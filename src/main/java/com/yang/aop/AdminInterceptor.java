@@ -9,6 +9,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.yang.config.token.TokenUtil;
+import com.yang.constant.Constant;
 
 @Component
 public class AdminInterceptor implements HandlerInterceptor {
@@ -28,8 +29,10 @@ public class AdminInterceptor implements HandlerInterceptor {
 		System.out.println("请求的地址：" + url);
 		String token = getToken(request, response, handler);
 		System.out.println(token);
-		boolean b=  tokenUtil.verify(token);
-		System.out.println(b);
+		boolean b=  tokenUtil.verify(token);		
+		String s = tokenUtil.getClaim(token, Constant.ACCOUNT);
+		
+		System.out.println(s);
 		return false;
 	}
 
