@@ -1,10 +1,17 @@
 package com.yang.user.service.impl;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yang.user.entity.Permission;
+import com.yang.user.entity.Role;
+import com.yang.user.entity.User;
 import com.yang.user.mapper.PermissionMapper;
+import com.yang.user.mapper.RoleMapper;
+import com.yang.user.model.MenuModel;
 import com.yang.user.service.IPermissionService;
 
 /**
@@ -17,5 +24,20 @@ import com.yang.user.service.IPermissionService;
  */
 @Service
 public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permission> implements IPermissionService {
+	
+	@Autowired
+	private RoleMapper roleMapper;
+	
+	@Autowired
+	public IPermissionService permissionService;
+	
+
+	@Override
+	public List<MenuModel> selectMenuModel(User user) {
+		List<Role> roleList =  roleMapper.findRoleByUserId(user);
+		return null;
+	}
+
+	
 
 }
