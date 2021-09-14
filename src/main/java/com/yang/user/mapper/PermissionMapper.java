@@ -18,5 +18,5 @@ import com.yang.user.entity.Role;
  */
 @Mapper
 public interface PermissionMapper extends BaseMapper<Permission> {
-	public List<Permission> findPermissionByRole(Role role);
+	public List<Permission> findPermissionByRole(List<Integer> list);
 }

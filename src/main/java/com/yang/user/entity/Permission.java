@@ -37,7 +37,7 @@ public class Permission implements Serializable {
     /**
      * 菜单排序
      */
-    private Integer zindex;
+    private String zindex;
 
     /**
      * 权限分类（0 菜单；1 功能）

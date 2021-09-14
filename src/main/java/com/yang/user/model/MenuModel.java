@@ -12,6 +12,7 @@ public class MenuModel {
 	private String page;
 	private String icon;
 	private int type;
+	private int pid;
 	private List<MenuModel> child;
 
 }

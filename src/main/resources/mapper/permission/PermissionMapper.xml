@@ -22,17 +22,15 @@
         id, name, pid, zindex, istype, descpt, code, icon, page, insert_time, update_time
     </sql>
     <select id="findPermissionByRole"
-            resultType="com.yang.user.entity.Permission"
-            parameterType="com.yang.user.entity.Role">
+            resultType="com.yang.user.entity.Permission">
         select p.* from permission p ,role r ,role_permission rp
         <where>
             rp.role_id = r.id and p.id = rp.permit_id
-            <if test="id !=null and id''">
-                AND r.id = #{id}
-            </if>
-
+            and r.id in
+            <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+            	#{id}
+            </foreach>
         </where>
-
     </select>
 
 </mapper>
