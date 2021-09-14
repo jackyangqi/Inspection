@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>设备 - 列表</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/layuiAdmin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/layuiAdmin/style/admin.css" media="all">
+</head>
+<body>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>组件</cite></a>
+        <a><cite>数据表格</cite></a>
+        <a><cite>数据表格的重载</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-card" id="add" style="display: none">
+        <div class="layui-card-body" style="padding: 15px;">
+            <form class="layui-form" action="" lay-filter="equipment-form" id="equipment">
+                <input type="text" name="id" id="eid" style="display: none">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">设备名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="filename" lay-verify="title" autocomplete="off" placeholder="请输入设备名称"
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">保管部门</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="custodydepartment" lay-verify="title" autocomplete="off"
+                                   placeholder="" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">保管人</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="custodyname" lay-verify="title" autocomplete="off" placeholder=""
+                                   class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">设备型号</label>
+                        <div class="layui-input-inline">
+                            <input type="tel" name="filemodel" lay-verify="" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">档案号</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="filecode" lay-verify="" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">生产厂家</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="factory" lay-verify="title" autocomplete="off" placeholder="请输入生产厂家"
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">检定单位</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="verificationdepartment" lay-verify="title" autocomplete="off"
+                               placeholder="请输入检定单位" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">检定日期</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="verificationnewtime" id="verificationnewtime" lay-verify="date"
+                                   placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">周期(月)</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="cycletime" lay-verify="title" autocomplete="off" placeholder=""
+                                   class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">室外/室内</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="indoor" value="1" title="室外" checked="">
+                        <input type="radio" name="indoor" value="2" title="室内">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">检定/校准</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="calibrationtype" value="1" title="检定" checked="">
+                        <input type="radio" name="calibrationtype" value="2" title="校准">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">检定员</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="verificationname" lay-verify="title" autocomplete="off"
+                                   placeholder="" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+    <table class="layui-hide" id="test" lay-filter="test"></table>
+</div>
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-inline">
+        <input class="layui-input" id="wd" placeholder="关键字搜索" autocomplete="off">
+    </div>
+    <button class="layui-btn layui-btn" lay-event="search">搜索</button>
+    <button class="layui-btn layui-btn" lay-event="add">新增设备</button>
+</script>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script type="text/html" id="eq_status">
+    <!-- 这里的 checked 的状态只是演示 -->
+    <input type="checkbox" name="status" value="{{d.id}}" lay-skin="switch" lay-text="正常|停用" lay-filter="eq_status" {{
+           d.status== '1' ? 'checked' : '' }}>
+</script>
+
+<script src="/layuiAdmin/layui/layui.js"></script>
+<script>
+
+    layui.use(['table', 'layer', 'jquery', 'form', 'layedit', 'laydate'], function () {
+        var table = layui.table, $ = layui.jquery;
+        var form = layui.form
+            , layer = layui.layer
+            , layedit = layui.layedit
+            , laydate = layui.laydate
+
+
+        laydate.render({
+            elem: '#verificationnewtime'
+        });
+        table.render({
+            elem: '#test',
+            url: '/equipment/list',
+            where: {
+                page: this.config().page,
+                wd: $('#wd').val(),
+                status: '',
+            }
+
+            , toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+            , defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+                title: '提示'
+                , layEvent: 'LAYTABLE_TIPS'
+                , icon: 'layui-icon-tips'
+            }]
+            , title: '设备列表'
+            , cols: [
+                [
+                    {type: 'checkbox', fixed: 'left'}
+                    , {field: 'id', title: 'id', width: 60, sort: true, fixed: true}
+                    , {field: 'filecode', title: '档案号', width: 110}
+                    , {field: 'filename', title: '设备名称'}
+                    , {field: 'filemodel', title: '设备型号', width: 170}
+                    , {field: 'factory', title: '生产厂家', width: 170, hide: true}
+                    , {field: 'verificationdepartment', title: '检定单位', hide: true}
+                    , {field: 'verificationoldtime', title: '上次检定日期', hide: true}
+                    , {field: 'verificationnewtime', title: '最近检定日期'}
+                    , {field: 'cycletime', title: '周期(月)', hide: true}
+                    , {field: 'effectivedate', title: '有效日期'}
+                    , {field: 'custodydepartment', title: '保管部门', hide: true}
+                    , {field: 'custodyname', title: '保管人'}
+                    , {
+                    field: 'indoor', title: '室内/室外', templet: function (res) {
+                        console.log(res.indoor)
+                        return res.indoor == 1 ? '室外' : '室内';
+                    }
+                }
+                    , {
+                    field: 'calibrationtype', title: '检定/校准', templet: function (res) {
+                        return res.calibrationtype == '1' ? '校准' : '检定';
+                    }
+                }, {
+                    field: 'apply', title: '使用状态', templet: function (res) {
+                        var str = '';
+                        if (res.apply == 1) {
+                            str = '<span style="color: green">未使用</span>';
+                        } else if (res.apply == 2) {
+                            str = '<span style="color: coral">待批准</span>';
+                        } else if (res.apply == 3) {
+                            str = '<span style="color: red">使用中</span>';
+                        } else if (res.apply == 4) {
+                            str = '<span style="color: lawngreen">待归还</span>';
+                        }
+
+                        return str;
+                    }
+                }
+                    , {field: 'verificationname', title: '检定员', hide: true}
+                    , {field: 'status', title: '状态', templet: '#eq_status', unresize: true}
+                    , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150}
+                ]
+            ]
+            , page: true,
+            parseData: function (res) {
+                var data = res;
+                return {
+                    "code": '0', //解析接口状态
+                    "msg": '返回成功', //解析提示文本
+                    "count": res.total, //解析数据长度
+                    "data": res.records //解析数据列表
+                };
+            },
+            id: 'eq_reload'
+        });
+
+        function reload() {
+            var wd = $('#wd').val();
+            table.reload('eq_reload', {
+                url: '/equipment/list',
+                where: {
+                    wd: $('#wd').val(),
+                    status: '',
+                },
+                done: function () {
+                    $('#wd').val(wd)
+                }
+            });
+        }
+
+        //头工具栏事件
+        table.on('toolbar(test)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch (obj.event) {
+                case 'search':
+                    var wd = $('#wd').val();
+                    table.reload('eq_reload', {
+                        url: '/equipment/list',
+                        where: {
+                            wd: $('#wd').val(),
+                            status: '',
+                        },
+                        done: function () {
+                            $('#wd').val(wd)
+                        }
+                    });
+
+
+                    break
+                case 'getCheckData':
+                    var data = checkStatus.data;
+                    layer.alert(JSON.stringify(data));
+                    break;
+                case 'getCheckLength':
+                    var data = checkStatus.data;
+                    layer.msg('选中了：' + data.length + ' 个');
+                    break;
+                case 'isAll':
+                    layer.msg(checkStatus.isAll ? '全选' : '未全选');
+                    break;
+                case 'add':
+                    $("#equipment")[0].reset();
+                    layui.form.render();
+                    layer.open({
+                        title: '新增设备',
+                        type: 1,
+                        area: ['700px'],
+                        offset: '50px',
+                        content: $('#add'),
+                        btn: ['确定', '取消'], //可以无限个按钮
+                        yes: function (index, layero) {
+                            $('#eid').val(0);
+                            $.ajax({
+                                url: '/equipment/save',
+                                data: $('#equipment').serialize(),
+                                type: "POST",
+                                dataType: "text",
+                                success: function (data) {
+                                    layer.msg('新增设备成功')
+                                    layer.close(index);
+                                    reload();
+                                }
+                            })
+                        },
+                        btn2: function (index, layero) {
+
+                        },
+                    });
+                    break
+
+                //自定义头工具栏右侧图标 - 提示
+                case 'LAYTABLE_TIPS':
+                    layer.alert('这是工具栏右侧自定义的一个图标按钮');
+                    break;
+            }
+            ;
+        });
+
+        form.on('switch(eq_status)', function (obj) {
+            var s_name = '';
+            if (obj.elem.checked) {
+                s_name = '正常';
+            } else {
+                s_name = '停用';
+            }
+            layer.tips(s_name, obj.othis);
+            $.ajax({
+                url: '/equipment/updatestatus',
+                data: {
+                    id: this.value,
+                    status: s_name == '正常' ? '1' : '2'
+                },
+                type: "POST",
+                dataType: "text",
+                success: function (data) {
+                }
+            })
+        });
+        //监听行工具事件
+        table.on('tool(test)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'del') {
+                layer.confirm('真的删除行吗', function (index) {
+                    $.ajax({
+                        url: '/equipment/del',
+                        data: data,
+                        type: "POST",
+                        dataType: "text",
+                        success: function (data) {
+                            layer.msg('删除设备成功')
+                            layer.close(index);
+                            reload();
+                        }
+                    })
+                });
+            } else if (obj.event === 'edit') {
+                console.log(data);
+                form.val("equipment-form", data);
+
+
+                layer.open({
+                    title: '修改设备',
+                    type: 1,
+                    area: ['700px'],
+                    offset: '50px',
+                    content: $('#add'),
+                    btn: ['确定', '取消'], //可以无限个按钮
+                    yes: function (index, layero) {
+                        $.ajax({
+                            url: '/equipment/update',
+                            data: $('#equipment').serialize(),
+                            type: "POST",
+                            dataType: "text",
+                            success: function (data) {
+                                layer.msg('修改设备成功')
+                                layer.close(index);
+                                reload();
+                            }
+                        })
+                    },
+                    btn2: function (index, layero) {
+
+                    },
+                });
+            }
+        });
+    });
+</script>
+</body>
+</html>

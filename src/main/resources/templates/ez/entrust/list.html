@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>数据表格的重载 - 数据表格</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="/style/admin.css" media="all">
+</head>
+<body>
+
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a lay-href="">主页</a>
+    <a><cite>组件</cite></a>
+    <a><cite>数据表格</cite></a>
+    <a><cite>数据表格的重载</cite></a>
+  </div>
+</div>
+<div class="layui-fluid">
+  <div class="layui-card" id="add" style="display: none">
+    <div class="layui-card-body" style="padding: 15px;">
+      <form class="layui-form" action="" lay-filter="record_form" id="record_form">
+        <input type="text" name="id" id="eid" style="display: none">
+        <div class="layui-form-item">
+          <label class="layui-form-label">设备名称</label>
+          <div class="layui-input-block">
+            <select name="equipmentid" lay-filter="equipmentid">
+              <option value=""></option>
+              <option th:each="elist:${elist}" th:value="${elist.id}"
+                      th:text="${elist.filename}"></option>
+            </select>
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">工程名称</label>
+          <div class="layui-input-block">
+            <input type="text" name="projectname" lay-verify="title" autocomplete="off" placeholder="请输入工程名称"
+                   class="layui-input">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">报告编号</label>
+          <div class="layui-input-block">
+            <input type="text" name="code" lay-verify="title" autocomplete="off" placeholder="请输入报告编号"
+                   class="layui-input">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <div class="layui-inline">
+            <label class="layui-form-label">开始时间</label>
+            <div class="layui-input-inline">
+              <input type="text" name="applicanttime" id ="applicanttime" lay-verify="" autocomplete="off"  class="layui-input">
+            </div>
+          </div>
+          <div class="layui-inline">
+            <label class="layui-form-label">结束时间</label>
+            <div class="layui-input-inline">
+              <input type="text" name="time" id="time" lay-verify="" autocomplete="off" placeholder="" class="layui-input">
+            </div>
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <div class="layui-inline">
+            <label class="layui-form-label">检测人</label>
+            <div class="layui-input-inline">
+              <input type="tel" name="inspector" lay-verify="" autocomplete="off" class="layui-input">
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <table class="layui-hide" id="test-table-reload" lay-filter="test-table-reload"></table>
+</div>
+<script type="text/html" id="toolbarDemo">
+  <div class="layui-inline">
+    <input class="layui-input" id="wd" placeholder="关键字搜索" autocomplete="off">
+  </div>
+  <button class="layui-btn layui-btn" lay-event="search">搜索</button>
+  <button class="layui-btn layui-btn" lay-event="add">新增记录</button>
+</script>
+<script type="text/html" id="barDemo">
+  <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script src="/layui/layui.js"></script>
+<script>
+  layui.use(['table', 'layer', 'jquery', 'form', 'layedit', 'laydate'], function () {
+    var table = layui.table, $ = layui.jquery;
+    var form = layui.form
+            , layer = layui.layer
+            , layedit = layui.layedit
+            , laydate = layui.laydate;
+    laydate.render({
+      elem: '#applicanttime',
+      type: 'datetime'
+    });
+    laydate.render({
+      type: 'datetime',
+      elem: '#time'
+    });
+
+    function reload(){
+      var wd = $('#wd').val();
+      table.reload('record_reload', {
+        url: '/record/list',
+        where: {
+          wd: $('#wd').val(),
+          status: '',
+        },
+        done: function () {
+          $('#wd').val(wd)
+        }
+      });
+    }
+    //方法级渲染
+    table.render({
+      elem: '#test-table-reload',
+      url: '/record/list',
+      where: {
+        page: this.config().page,
+        wd: $('#wd').val(),
+        status: $('#status').val(),
+      },
+      toolbar: '#toolbarDemo', //开启头部工具栏，并为其绑定左侧模板
+      defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+        title: '提示'
+        , layEvent: 'LAYTABLE_TIPS'
+        , icon: 'layui-icon-tips'
+      }],
+      title: '设备使用列表',
+      cols: [
+        [
+          {checkbox: true, fixed: true}
+          , {field: 'id', title: 'id', width: 60, sort: true, fixed: true}
+          , {field: 'projectname', title: '工程名称'}
+          , {field: 'code', title: '报告编号'}
+          , {field: 'position', title: '位置信息',hide:true}
+          , {field: 'time', title: '使用时间', width: 170}
+          , {field: 'inspector', title: '检测人', width: 120}
+          , {field: 'equipmentid', title: '设备ID', sort: true, width: 120}
+          , {field: 'applicant', title: '申请人'}
+          , {field: 'applicanttime', title: '申请时间',width: 170}
+          , {field: 'type', title: '状态',templet:function (res){
+            var str = '';
+            if( res.type == 1 ){
+              str ='<span style="color: red">正在使用</span>';
+            }else if(res.type == 2 ){
+              str ='<span style="color: green">记录正常</span>';
+            }else if(res.type == 3 ){
+              str ='<span style="color: #e5dc1f">现场未使用</span>';
+            }
+            return str;
+          }}
+          , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150}
+        ]
+      ]
+      , totalRow: false
+      , page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+        layout: ['count', 'prev', 'page', 'next', 'skip', 'limit'] //自定义分页布局
+        //,curr: 5 //设定初始在第 5 页
+        , limits: [10, 15, 20]
+        , groups: 5 //只显示 1 个连续页码
+        , first: false //不显示首页
+        , last: false //不显示尾页
+
+      }
+      , parseData: function (res) {
+        var data = res;
+        return {
+          "code": '0', //解析接口状态
+          "msg": '返回成功', //解析提示文本
+          "count": res.total, //解析数据长度
+          "data": res.records //解析数据列表
+        };
+      },
+      id:'record_reload',
+    });
+
+
+    $('.test-table-reload-btn .layui-btn').on('click', function () {
+      var type = $(this).data('type');
+      active[type] ? active[type].call(this) : '';
+    });
+
+//头工具栏事件
+    table.on('toolbar(test-table-reload)', function (obj) {
+      var checkStatus = table.checkStatus(obj.config.id);
+      switch (obj.event) {
+        case 'search':
+          var wd = $('#wd').val();
+          table.reload('record_reload', {
+            url: '/record/list',
+            where: {
+              wd: $('#wd').val(),
+            },
+            done: function () {
+              $('#wd').val(wd)
+            }
+          });
+          break
+        case 'add':
+          $("#record_form")[0].reset();
+          layui.form.render();
+          layer.open({
+            title: '新增设备记录',
+            type: 1,
+            area: ['700px'],
+            offset: '50px',
+            content: $('#add'),
+            btn: ['确定', '取消'], //可以无限个按钮
+            yes: function (index, layero) {
+              $('#eid').val(0);
+              $.ajax({
+                url: '/record/save',
+                data: $('#record_form').serialize(),
+                type: "POST",
+                dataType: "text",
+                success: function (data) {
+                  layer.msg('新增记录成功')
+                  layer.close(index);
+                  reload();
+                }
+              })
+            },
+            btn2: function (index, layero) {
+
+            },
+          });
+          break
+      }
+    });
+    //监听行工具事件
+    table.on('tool(test-table-reload)', function (obj) {
+      var data = obj.data;
+      if (obj.event === 'del') {
+        layer.confirm('真的删除行么', function (index) {
+          obj.del();
+          layer.close(index);
+        });
+      } else if (obj.event === 'edit') {
+        layer.prompt({
+          formType: 2
+          , value: data.email
+        }, function (value, index) {
+          obj.update({
+            email: value
+          });
+          layer.close(index);
+        });
+      }
+    });
+
+  });
+</script>
+</body>
+</html>

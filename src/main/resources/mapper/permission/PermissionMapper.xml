@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yang.user.mapper.PermissionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yang.user.entity.Permission">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="pid" property="pid" />
+        <result column="zindex" property="zindex" />
+        <result column="istype" property="istype" />
+        <result column="descpt" property="descpt" />
+        <result column="code" property="code" />
+        <result column="icon" property="icon" />
+        <result column="page" property="page" />
+        <result column="insert_time" property="insertTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, pid, zindex, istype, descpt, code, icon, page, insert_time, update_time
+    </sql>
+    <select id="findPermissionByRole"
+            resultType="com.yang.user.entity.Permission"
+            parameterType="com.yang.user.entity.Role">
+        select p.* from permission p ,role r ,role_permission rp
+        <where>
+            rp.role_id = r.id and p.id = rp.permit_id
+            <if test="id !=null and id''">
+                AND r.id = #{id}
+            </if>
+
+        </where>
+
+    </select>
+
+</mapper>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yang.user.mapper.RoleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yang.user.entity.Role">
+        <id column="id" property="id" />
+        <result column="role_name" property="roleName" />
+        <result column="descpt" property="descpt" />
+        <result column="code" property="code" />
+        <result column="insert_uid" property="insertUid" />
+        <result column="insert_time" property="insertTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, role_name, descpt, code, insert_uid, insert_time, update_time
+    </sql>
+    <select id="findRoleByUserId" resultType="com.yang.user.entity.Role" parameterType="com.yang.user.entity.User">
+        select r.* from role r , user_role ur, user u
+        <where>
+            r.id = ur.role_id and u.id = ur.user_id
+            <if test="id !=null and id!=''">
+                AND u.id = #{id}
+            </if>
+
+        </where>
+
+    </select>
+</mapper>

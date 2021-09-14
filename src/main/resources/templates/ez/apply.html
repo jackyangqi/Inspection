@@ -1,0 +1,242 @@
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>设备申请</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/layuiAdmin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/layuiAdmin/style/admin.css" media="all">
+    <style>
+        .apply-show {
+            display: block;
+        }
+
+        .apply-hide {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="layui-fluid">
+
+    <div class="layui-card">
+        <div class="layui-card-header">设备申请</div>
+        <div class="layui-card-body" style="padding: 15px;">
+            <form class="layui-form" action="" id="eq_apply_form" lay-filter="component-form-group">
+                <div class="layui-form-item" style="display: none">
+                    <label class="layui-form-label">设备状态</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="" th:value="${equipment.apply}" lay-verify="title"
+                               autocomplete="off" placeholder="请输入工程名称" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item" style="display: none">
+                    <label class="layui-form-label">设备id</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="equipmentid" readonly th:value="${equipment.id}" lay-verify="title"
+                               autocomplete="off" placeholder="" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item" style="display: none">
+                    <label class="layui-form-label">id</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="id" readonly lay-verify="title"
+                               autocomplete="off" placeholder="请输入工程名称" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">申请的设备</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="filename" disabled th:value="${equipment.filename}" lay-verify="title"
+                               autocomplete="off" placeholder="请输入工程名称" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">设备保管人</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="custodyname" disabled th:value="${equipment.custodyname}"
+                               lay-verify="title" autocomplete="off" placeholder="" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item" id="div_projectname">
+                    <label class="layui-form-label">工程名称</label>
+                    <div class="layui-input-block">
+                        <div th:style="'display:' + @{*{equipment.apply}==1 ? 'block':'none'} + ''">
+                            <input style="display: block" type="text" name="projectname" lay-verify="title"
+                                   autocomplete="off"
+                                   placeholder="多个工程名称用,隔开" class="layui-input">
+                        </div>
+                        <div id="div_projectnameselect" th:style="'display:' + @{*{equipment.apply}==0 ? 'block':'none'} + ''">
+                            <select name="projectnameselect" lay-filter="projectnameselect">
+                                <option value=""></option>
+                                <option th:each="record:${record}" th:value="${record.projectname+','+record.id}"
+                                        th:if="${record.inspector==''}"
+                                        rid="${record.id}" th:text="${record.projectname}"></option>
+                            </select>
+                        </div>
+                        <div id="div_projectnamesusr" th:style="'display:' + @{*{equipment.apply}==3 ? 'block':'none'} + ''">
+                            <select name="projectnameselect" lay-filter="projectnameselect">
+                                <option value=""></option>
+                                <option th:each="record:${record}" th:value="${record.projectname+','+record.id}"
+                                        th:if="${record.inspector==''}"
+                                        rid="${record.id}" th:text="${record.projectname}"></option>
+                            </select>
+                        </div>
+                        <div id="div_remand" th:style="'display:' + @{*{equipment.apply}==4 ? 'block':'none'} + ''">
+                            <select name="projectnameselect" lay-filter="projectnameselect">
+                                <option value=""></option>
+                                <option th:each="record:${record}" th:value="${record.projectname+','+record.id}"
+                                        rid="${record.id}" th:text="${record.projectname}"></option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="layui-form-item" id="div_applicant">
+                    <label class="layui-form-label">申请人</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="applicant" lay-verify="required" placeholder="请输入申请人"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+
+
+
+
+
+                <div class="layui-form-item" id="div_inspector"
+                     th:style="'display:' + @{*{equipment.apply}==3 ? 'block':'none'} + ''">
+                    <label class="layui-form-label">检测人</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="inspector" lay-verify="required" placeholder="请输入检测人"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item" id="div_r_t"
+                     th:style="'display:' + @{*{equipment.apply}==4 ? 'block':'none'} + ''">
+                    <label class="layui-form-label">是否完成</label>
+                    <div class="layui-input-block">
+                        <input type="checkbox" checked="" name="open" lay-skin="switch" lay-filter="switchTest" lay-text="完成|未完成">
+                    </div>
+                </div>
+                <div class="layui-form-item" th:style="'display:' + @{*{equipment.apply}==4 ? 'block':'none'} + ''" >
+                    <label class="layui-form-label"></label>
+                    <div class="layui-input-block">
+                       <div>
+                           现场检测实验是否完成
+                       </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label"></label>
+                    <div class="layui-input-block">
+                        <button type="button" id="btn_submit" class="layui-btn"
+                                th:style="'display:' + @{*{equipment.apply}==1 ? 'block':'none'} + ''">立即申请
+                        </button>
+                        <button type="button" id="btn_update" class="layui-btn"
+                                th:style="'display:' + @{*{equipment.apply}==3 ? 'block':'none'} + ''">生成使用记录
+                        </button>
+                        <button type="button" id="btn_remand" class="layui-btn"
+                                th:style="'display:' + @{*{equipment.apply}==4 ? 'block':'none'} + ''">归还设备
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+</div>
+<script type="text/javascript" th:inline="javascript">
+
+</script>
+<script src="/layuiAdmin/layui/layui.js"></script>
+<script type="text/javascript" th:inline="javascript">
+    layui.use(['table', 'layer', 'jquery', 'form', 'layedit', 'laydate'], function () {
+        var table = layui.table, $ = layui.jquery;
+        var form = layui.form
+            , layer = layui.layer
+            , layedit = layui.layedit
+            , laydate = layui.laydate;
+
+
+        var data = [[${equipment.apply}]]
+        console.log(data)
+        if (data == 3) {//使用
+            $('#div_projectname').find('input').attr("readonly", "readonly")
+            $('#div_applicant').find('input').attr("readonly", "readonly")
+        }else if(data == 4){
+            //div_projectnameselect
+            //div_remand
+            $('#div_projectnameselect').css({
+                //display:'none'
+            })
+        }
+        var single = [[${record}]];
+        $.each(single, function (index, item) {
+            $("input[name='applicant']").val(item.applicant)
+        })
+        form.on('select(projectnameselect)', function (data) {
+            console.log(data.value)
+            $("input[name='projectname']").val(data.value.split(",")[0]);
+            $("input[name='id']").val(data.value.split(",")[1]);
+
+            form.render('select');//select是固定写法 不是选择器
+        });
+
+
+        $('#btn_submit').on('click', function () {
+            console.log($('#eq_apply_form').serialize())
+            $.ajax({
+                url: '/record/apply',
+                data: $('#eq_apply_form').serialize(),
+                type: "POST",
+                dataType: "text",
+                success: function (data) {
+                    layer.msg('申请成功')
+                    window.location.reload();
+                }
+            })
+        })
+        $('#btn_update').on('click', function () {
+            console.log($('#eq_apply_form').serialize())
+            $.ajax({
+                url: '/record/use',
+                params:{
+                  status:'1'
+                },
+                data: $('#eq_apply_form').serialize(),
+                type: "POST",
+                dataType: "text",
+                success: function (data) {
+                    layer.msg('生成记录成功')
+                    window.location.reload();
+                }
+            })
+        })
+        $('#btn_remand').on('click', function () {
+            console.log($('#eq_apply_form').serialize())
+            $.ajax({
+                url: '/record/remand',
+                data: $('#eq_apply_form').serialize(),
+                type: "POST",
+                dataType: "text",
+                success: function (data) {
+                    layer.msg('归还成功')
+                    window.location.reload();
+                }
+            })
+        })
+
+    });
+</script>
+</body>
+</html>

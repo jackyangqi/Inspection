@@ -10,12 +10,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.yang.config.token.TokenUtil;
 import com.yang.constant.Constant;
+import com.yang.exception.CustomUnauthorizedException;
 
 @Component
 public class AdminInterceptor implements HandlerInterceptor {
 
 	public static final String TokenName = "Authorization";
-	
+
 	@Autowired
 	private TokenUtil tokenUtil;
 
@@ -28,12 +29,15 @@ public class AdminInterceptor implements HandlerInterceptor {
 		String url = request.getRequestURI();
 		System.out.println("请求的地址：" + url);
 		String token = getToken(request, response, handler);
+		if (token == null) {
+			throw new CustomUnauthorizedException();
+		}
 		System.out.println(token);
-		boolean b=  tokenUtil.verify(token);		
+		boolean b = tokenUtil.verify(token);
 		String s = tokenUtil.getClaim(token, Constant.ACCOUNT);
-		
+
 		System.out.println(s);
-		return false;
+		return true;
 	}
 
 	/**

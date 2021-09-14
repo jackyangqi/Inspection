@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>委托单</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/style/admin.css" media="all">
+    <link rel="stylesheet" href="/style/template.css" media="all">
+</head>
+<body>
+
+
+<div class="layui-fluid layadmin-maillist-fluid">
+    <div class="layui-row layui-col-space15">
+        <div th:each="list:${list}" class="layui-col-md12">
+            <div class="layadmin-contact-box">
+                <div class="layui-col-md12">
+                    <div class="layui-col-md8 layadmin-padding-left20 layui-col-sm6">
+                        <a href="javascript:;">
+                            <h3 class="layadmin-title">
+                                <strong> [[${list.name}]]</strong>
+                            </h3>
+                        </a>
+                        <div class="layadmin-address">
+                            <a href=""  th:href="@{'/resources/download?id='+${list.resId}}">
+                                <strong>[[${list.title}]]</strong>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/layui/layui.js"></script>
+    <script>
+        layui.config({
+            base: '/' //静态资源所在路径
+        }).extend({
+            index: 'lib/index' //主入口模块
+        }).use(['index']);
+    </script>
+</body>
+</html>

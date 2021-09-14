@@ -14,6 +14,7 @@ public class WebConfig implements WebMvcConfigurer {
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
 		registry.addViewController("/").setViewName("forward:/index.html");
+		//registry.addViewController("/error").setViewName("forward:/error.html");
 		WebMvcConfigurer.super.addViewControllers(registry);
 	}
 
@@ -24,10 +25,11 @@ public class WebConfig implements WebMvcConfigurer {
 		registration.addPathPatterns("/**"); // 所有路径都被拦截
 		registration.excludePathPatterns( // 添加不拦截路径
 				"/login", // 登录
+				"/user/login", 
+				"/error",
+				"/favicon.ico",
 				"/user/login", // html静态资源
-				"/layuiAdmin/*.js", // js静态资源
-				"/**/*.css", // css静态资源
-				"/**/*.woff", "/**/*.ttf");
+				"/layuiAdmin/**");
 		WebMvcConfigurer.super.addInterceptors(registry);
 	}
 }
