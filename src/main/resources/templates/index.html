@@ -454,26 +454,14 @@
                 </ul>
 
                 <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu1" lay-filter="layadmin-system-side-menu">
-                    <li th:each="list:${menu}" data-name="" class="layui-nav-item">
-                        <a href="javascript:;" lay-tips="[[${list.name}]]" lay-direction="2">
+                    <li th:each="rootMenu:${menu}" data-name="" class="layui-nav-item">
+                        <a href="javascript:;"  th:lay-tips="${rootMenu.name}"  lay-direction="2">
                             <i class="layui-icon layui-icon-home"></i>
-                            <cite>[[${list.name}]]</cite>
+                            <cite>[[${rootMenu.name}]]</cite>
                         </a>
-                        <dl th:each="list:${menu.child}" class="layui-nav-child">
+                        <dl th:each="childMenu:${rootMenu.child}" class="layui-nav-child">
                             <dd data-name="console">
-                                <a lay-href="/criterion/">规范列表</a>
-                            </dd>
-                            <dd data-name="console">
-                                <a lay-href="/experiment/">实验</a>
-                            </dd>
-                            <dd data-name="console">
-                                <a lay-href="/equipment/">设备列表</a>
-                            </dd>
-                            <dd data-name="console">
-                                <a lay-href="/record/">设备使用记录</a>
-                            </dd>
-                            <dd data-name="console">
-                                <a lay-href="/record/">委托单</a>
+                                <a lay-href=""  th:lay-href="${childMenu.page}">[[${childMenu.name}]]</a>
                             </dd>
                         </dl>
                     </li>
