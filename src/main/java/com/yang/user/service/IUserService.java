@@ -12,7 +12,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2021-09-13
  */
 public interface IUserService extends IService<User> {
-	
-	public User selectOneByAccount(String account,String password);
+
+	public User selectOneByAccount(String account, String password);
 
 }

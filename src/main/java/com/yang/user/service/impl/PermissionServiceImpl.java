@@ -19,7 +19,7 @@ import com.yang.util.TreeUtil;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author laoyang
@@ -27,42 +27,23 @@ import com.yang.util.TreeUtil;
  */
 @Service
 public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permission> implements IPermissionService {
-	
+
 	@Autowired
 	private RoleMapper roleMapper;
 	@Autowired
 	private PermissionMapper permissionMapper;
-	
-
-	
 
 	@Override
-	public List<MenuModel> selectMenuModel(User user) {		
-		List<Role> roleList =  roleMapper.findRoleByUserId(user);
+	public List<MenuModel> selectMenuModel(User user) {
+		List<Role> roleList = roleMapper.findRoleByUserId(user);
 		List<Integer> list = new ArrayList<Integer>();
 		for (Iterator iterator = roleList.iterator(); iterator.hasNext();) {
 			Role role = (Role) iterator.next();
 			list.add(role.getId());
 		}
-		List<Permission> permissionList =  permissionMapper.findPermissionByRole(list);
+		List<Permission> permissionList = permissionMapper.findPermissionByRole(list);
 		List<MenuModel> resultList = TreeUtil.createMenu(permissionList);
 		return resultList;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-	
 
 }

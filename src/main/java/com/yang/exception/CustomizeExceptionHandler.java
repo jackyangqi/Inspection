@@ -15,12 +15,12 @@ public class CustomizeExceptionHandler {
 		} else {
 			model.addAttribute("message", "服务冒烟了,要不让你稍后再试试");
 		}
-		return new ModelAndView("/error");
+		return new ModelAndView("template/tips/404");
 	}
 	@ExceptionHandler(NullPointerException.class)
 	public ModelAndView handle1(Throwable e, Model model) {	
 		System.out.println(e);
-		return new ModelAndView("redirect:/error");
+		return new ModelAndView("redirect:template/tips/404");
 	}
 	
 	@ExceptionHandler(CustomUnauthorizedException.class)

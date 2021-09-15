@@ -26,7 +26,11 @@ public class BaseController {
 	public String index1() {
 		return "index";
 	}
-
+	@RequestMapping("/admin/home")
+	public String home() {
+		return "home/console";
+	}
+	
 	@RequestMapping("login")
 	public String login() {
 		return "user/login";
