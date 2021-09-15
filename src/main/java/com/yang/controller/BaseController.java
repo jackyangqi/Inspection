@@ -21,8 +21,13 @@ public class BaseController {
 	public IPermissionService permissionService;
 
 	@RequestMapping("/")
-	public String index() {
-		return "index";
+	public ModelAndView index(Model model) {
+		User user  = new User();
+		user.setId(1);
+		List<MenuModel> resultList  = permissionService.selectMenuModel(user);
+		model.addAttribute("menu", resultList);
+		ModelAndView view = new ModelAndView("index");		
+		return view;
 	}
 	@RequestMapping("/admin/index")
 	public ModelAndView index1(Model model) {		
