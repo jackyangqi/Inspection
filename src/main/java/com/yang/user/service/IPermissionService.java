@@ -18,5 +18,7 @@ import com.yang.user.model.MenuModel;
 public interface IPermissionService extends IService<Permission> {
 
 	public List<MenuModel> selectMenuModel(User user);
+	
+	public List<Permission> findPermissionByUser(User user);
 
 }

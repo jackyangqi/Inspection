@@ -86,7 +86,7 @@ public class TokenUtil {
      * @author Wang926454
      * @date 2018/8/31 9:07
      */
-    public static String sign(String account, String currentTimeMillis) {
+    public static String sign(String account,String currentTimeMillis) {
         try {
             // 帐号加JWT私钥加密
             String secret = account + Base64ConvertUtil.decode(encryptJWTKey);
