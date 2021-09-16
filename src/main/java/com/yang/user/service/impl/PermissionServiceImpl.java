@@ -58,4 +58,12 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
 		return permissionList;
 	}
 
+	@Override
+	public List<Permission> findPermissionByRole(Role role) {
+		List<Integer> list = new ArrayList<Integer>();
+		list.add(role.getId());
+		List<Permission> permissionList = permissionMapper.findPermissionByRole(list);
+		return permissionList;
+	}
+
 }

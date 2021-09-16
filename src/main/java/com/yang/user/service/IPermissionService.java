@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yang.user.entity.Permission;
+import com.yang.user.entity.Role;
 import com.yang.user.entity.User;
 import com.yang.user.model.MenuModel;
 
@@ -20,5 +21,7 @@ public interface IPermissionService extends IService<Permission> {
 	public List<MenuModel> selectMenuModel(User user);
 	
 	public List<Permission> findPermissionByUser(User user);
+	
+	public List<Permission> findPermissionByRole(Role role);
 
 }
