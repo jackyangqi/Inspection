@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.yang.config.redisConfig.RedisUtil;
 import com.yang.config.token.TokenUtil;
+import com.yang.pojo.BaseParameter;
 import com.yang.user.entity.User;
 import com.yang.user.service.IUserService;
 
@@ -34,9 +36,9 @@ public class UserController {
 	
 	@RequestMapping("/list")
 	@ResponseBody
-	public String list() {
-		List<User> list = service.list();
-		return JSONObject.toJSONString(list);
+	public String list(BaseParameter<User> param) {
+		IPage<User> iPage = service.findUserByParam(param);
+		return JSONObject.toJSONString(iPage);
 	}
 
 	@RequestMapping("/login")

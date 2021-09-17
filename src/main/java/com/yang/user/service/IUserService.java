@@ -1,6 +1,11 @@
 package com.yang.user.service;
 
+import com.yang.pojo.BaseParameter;
 import com.yang.user.entity.User;
+
+import java.util.List;
+
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -14,5 +19,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface IUserService extends IService<User> {
 
 	public User selectOneByAccount(String account, String password);
+	
+	
+	public IPage<User> findUserByParam(BaseParameter<User> param);
 
 }
