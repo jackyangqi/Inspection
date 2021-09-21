@@ -8,6 +8,6 @@ public class BaseParameter<T> {
 	private int current;
 	private int size;
 	private String word;
-	private T t;
+	private T t ;
 
 }

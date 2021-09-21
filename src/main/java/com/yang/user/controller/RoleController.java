@@ -28,14 +28,16 @@ public class RoleController {
 		service.list();
 		return "";
 	}
-	@RequestMapping("/TreeList")
+	@RequestMapping("/treeList")
 	@ResponseBody
-	public String treeList(BaseParameter<User> param) {		
-		List<Role> list =  service.findRoleByUserId(param.getT());
+	public String treeList(User user) {		
+		List<Role> list =  service.findRoleByUserId(user);
 		Map<String, Object> map = new HashedMap<String, Object>();
 		map.put("code", 0);
 		map.put("data", list);
 		return JSONObject.toJSONString(map);
 	}
+	
+	
 
 }
