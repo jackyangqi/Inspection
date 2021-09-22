@@ -3,6 +3,7 @@ package com.yang.user.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -62,12 +63,12 @@ public class User implements Serializable {
     /**
      * 注册时间
      */
-    private LocalDateTime insertTime;
+    private Date insertTime;
 
     /**
      * 修改时间
      */
-    private LocalDateTime updateTime;
+    private Date updateTime;
 
     /**
      * 是否删除（0：正常；1：已删）

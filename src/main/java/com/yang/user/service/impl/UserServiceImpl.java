@@ -35,6 +35,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 		User user = mapper.selectOne(wrapper);
 		return user;
 	}
+	
+	
 
 	@Override
 	public IPage<User> findUserByParam(BaseParameter<User> param) {
@@ -42,6 +44,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 		Page<User> page = new Page<>(param.getCurrent(),param.getSize());
 		IPage<User> iPage = mapper.selectPage(page, wrapper);
 		return iPage;
+	}
+
+
+
+	@Override
+	public User userNameIsRepeat(String username) {
+		QueryWrapper<User> wrapper = new QueryWrapper<User>(); 
+		wrapper.eq("username", username);
+		User user = mapper.selectOne(wrapper);
+		return user;
 	}
 
 }

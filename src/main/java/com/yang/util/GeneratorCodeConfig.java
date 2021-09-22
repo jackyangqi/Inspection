@@ -19,8 +19,8 @@ public class GeneratorCodeConfig {
 
 	public static void main(String[] args) {
 
-		String mk = "user";
-		String tableName = "user";
+		String mk = "company";
+		String tableName = "company";
 
 		// 代码生成器
 		AutoGenerator mpg = new AutoGenerator();

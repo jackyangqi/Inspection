@@ -20,6 +20,7 @@ public interface IUserService extends IService<User> {
 
 	public User selectOneByAccount(String account, String password);
 	
+	public User userNameIsRepeat(String username);
 	
 	public IPage<User> findUserByParam(BaseParameter<User> param);
 

@@ -15,35 +15,6 @@
 <body>
 	<div class="layui-fluid">
 		<div class="layui-row layui-col-space15">
-			<div class="layui-col-md12">
-				<div class="layui-card">
-					<div class="layui-card-header">用户列表</div>
-					<div class="layui-card-body">
-						<div class="user-table-query" style="margin-bottom: 10px;">
-							<div class="layui-inline">
-								<input class="layui-input" name="" id="user-table-query-wd" autocomplete="off">
-							</div>
-							<div class="layui-inline layui-form">
-								<select id="status" lay-verify="">
-									<option value="0" selected>全部</option>
-									<option value="1">现行</option>
-									<option value="2">其他</option>
-								</select>
-							</div>
-							<button class="layui-btn" data-type="reload">搜索</button>
-						</div>
-						<table class="layui-hide" id="user-table" lay-filter="user-table"></table>
-					</div>
-				</div>
-			</div>
-			<div class="layui-col-md6">
-				<div class="layui-card">
-					<div class="layui-card-header">角色列表</div>
-					<div class="layui-card-body">
-						<div class="roleTree"></div>
-					</div>
-				</div>
-			</div>
 			<div class="layui-col-md6">
 				<div class="layui-card">
 					<div class="layui-card-header">权限菜单</div>
@@ -122,11 +93,11 @@
 					success:function (data){
 						console.log(data);
 						var arr = [];
-						roleTree.setChecked(arr);
+						roleTree.unCheckNodes();
 						$.each(data.data,function (index,item){
 							arr.push(item.id)
 						})
-						roleTree.setChecked(arr);
+						roleTree.setChecked(arr,true);
 					}
 				})
 
@@ -151,6 +122,7 @@
 				},
 				showCheckbox:true,
 				defaultExpandAll:true,
+				//checkStrictly:true,
 				request: {
 			        name: "name",
 			        key: "id",
@@ -160,6 +132,14 @@
 			        isLeaf: "isLeaf"
 			    }
 			});
+
+			eleTree.on("nodeClick(data1)",function(d) {
+				console.log(d.data);    // 点击节点对应的数据
+				console.log(d.event);   // event对象
+				console.log(d.node);    // 点击的dom节点
+				console.log(this);      // 与d.node相同
+			})
+
 			var roleTree = eleTree.render({
 				elem : '.roleTree',
 				url : '/role/treeList',

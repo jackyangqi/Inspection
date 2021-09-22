@@ -30,6 +30,7 @@
             <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
             	#{id}
             </foreach>
+          
         </where>
     </select>
 
