@@ -32,7 +32,7 @@
 							<div class="layui-form-item">
 								<label class="layui-form-label">父级菜单</label>
 								<div class="layui-input-block">
-									<input type="text" name="pname" lay-verify="pname" autocomplete="off" placeholder=""
+									<input disabled type="text" name="pname" lay-verify="pname" autocomplete="off" placeholder=""
 										   class="layui-input">
 								</div>
 							</div>
@@ -116,7 +116,7 @@
 			});
 
 			eleTree.on("nodeClick(permissionTree)",function(d) {
-				console.log(d.data);    // 点击节点对应的数据
+				console.log(d.data.parentData.data.name);    // 点击节点对应的数据
 				$.ajax({
 					url:'/prmission/findById',
 					data:{
@@ -124,8 +124,7 @@
 					},
 					dataType : 'json',
 					success:function (data){
-						console.log(data);
-						$("input[name='pname']").val(d.data.parentData.name);
+						$("input[name='pname']").val(d.data.parentData.data.name)
 						form.val("permission_form", data.data);
 					}
 				})
