@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yang.pojo.ResponseData;
 import com.yang.user.entity.Permission;
 import com.yang.user.entity.Role;
 import com.yang.user.entity.User;
@@ -36,6 +37,16 @@ public class PrmissionController {
 		return view;
 	}
 
+	@RequestMapping("/findById")
+	@ResponseBody
+	public String findById(int id) {
+		Permission permission = permissionService.getById(id);
+		if (permission != null) {
+			return ResponseData.result(true, "", permission, "success");
+		}
+		return ResponseData.error("error");
+	}
+
 	@RequestMapping("/menuByRole")
 	@ResponseBody
 	public String menuByRole() {
@@ -49,8 +60,8 @@ public class PrmissionController {
 		map.put("code", 0);
 		map.put("data", resultList);
 		String res = JSONObject.toJSONString(map);
-		//res = res.replace("name", "label");
-		//res = res.replace("child", "children");
+		// res = res.replace("name", "label");
+		// res = res.replace("child", "children");
 		return JSONObject.toJSONString(map);
 	}
 
