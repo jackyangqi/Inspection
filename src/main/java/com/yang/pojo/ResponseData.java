@@ -11,6 +11,8 @@ public class ResponseData {
 	private String msg;
 	private boolean bool;
 
+	public ResponseData() {
+	}
 	/**
 	 * 
 	 * @param code
@@ -36,13 +38,24 @@ public class ResponseData {
 		String jsonResult = JSONObject.toJSONString(res);
 		return jsonResult;		
 	}
+	
+	public static String result(boolean bool, String msg) {
+		ResponseData res = new ResponseData();
+		res.setBool(bool);
+		res.setMsg(msg);
+		String jsonResult = JSONObject.toJSONString(res);
+		return jsonResult;		
+	}
+	
 	/**
 	 * 返回错误信息
 	 * @param msg
 	 * @return
 	 */
 	public static String error(String msg) {
-		ResponseData res = new ResponseData(false,"", "",msg );
+		ResponseData res = new ResponseData();
+		res.setBool(false);
+		res.setMsg(msg);
 		String jsonResult = JSONObject.toJSONString(res);
 		return jsonResult;	
 	}

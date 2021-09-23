@@ -23,5 +23,9 @@ public interface IPermissionService extends IService<Permission> {
 	public List<Permission> findPermissionByUser(User user);
 	
 	public List<Permission> findPermissionByRole(Role role);
+	
+	public Permission findById(int id);
+	
+	public List<Permission> list();
 
 }

@@ -28,7 +28,7 @@
 					<div class="layui-card-header"></div>
 					<div class="layui-card-body">
 						<form class="layui-form" action="" lay-filter="permission_form" id="permission_form">
-							<input type="text" name="id" id="uid" style="display: none">
+							<input type="text" name="id" id="uid" style="display: none;">
 							<div class="layui-form-item">
 								<label class="layui-form-label">父级菜单</label>
 								<div class="layui-input-block">
@@ -74,7 +74,7 @@
 							</div>
 							<div class="layui-form-item">
 								<label class="layui-form-label"></label>
-								<button class="layui-btn">修改</button>
+								<button type="button" id="prmSubBtn" class="layui-btn">修改</button>
 							</div>
 						</form>
 					</div>
@@ -94,10 +94,7 @@
 			var $ = layui.jquery;
 			var permissionTree = eleTree.render({
 				elem : '.permissionTree',
-				url : '/prmission/menuByRole',
-				where:{
-					'userid':0
-				},
+				url : '/permission/permissionAllTree',
 				emptText: "暂无数据",        // 内容为空的时候展示的文本
 				renderAfterExpand: true,    // 是否在第一次展开某个树节点后才渲染其子节点
 				highlightCurrent: true,    // 是否高亮当前选中节点，默认值是 false。
@@ -118,7 +115,7 @@
 			eleTree.on("nodeClick(permissionTree)",function(d) {
 				console.log(d.data.parentData.data.name);    // 点击节点对应的数据
 				$.ajax({
-					url:'/prmission/findById',
+					url:'/permission/findById',
 					data:{
 						id:d.data.currentData.id
 					},
@@ -129,6 +126,21 @@
 					}
 				})
 			})
+
+			$("#prmSubBtn").on('click',function (){
+				$.ajax({
+					url:'/permission/update',
+					data: $('#permission_form').serialize(),
+					type: "POST",
+					dataType : 'json',
+					success:function (data){
+						layer.msg(data.msg);
+						permissionTree.reload();
+					}
+				})
+			})
+
+
 		});
 	</script>
 </body>

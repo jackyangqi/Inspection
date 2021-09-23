@@ -30,8 +30,14 @@
             <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
             	#{id}
             </foreach>
-          
+            ORDER BY zindex
         </where>
     </select>
 
+    <select id="findById" resultType="com.yang.user.entity.Permission">
+        select p1.*,p2.name as pname  from permission p1 left join permission p2 on p1.pid = p2.id
+       <where>
+           p1.id = #{id}
+       </where>
+    </select>
 </mapper>
