@@ -59,6 +59,8 @@ public class UserController {
 			return ResponseData.result(false, "", "", "用户名已存在");
 		}
 		user.setInsertTime(new Date());
+		//TODO 可加盐处理
+		user.setPassword("123456");
 		boolean issave = service.save(user);
 		if (issave) {
 			return ResponseData.result(true, "", "", "新增用户成功");

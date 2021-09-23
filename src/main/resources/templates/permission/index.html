@@ -19,7 +19,60 @@
 				<div class="layui-card">
 					<div class="layui-card-header">权限菜单</div>
 					<div class="layui-card-body">
-						<div class="permissionTree"></div>
+						<div class="permissionTree" lay-filter="permissionTree"></div>
+					</div>
+				</div>
+			</div>
+			<div class="layui-col-md6">
+				<div class="layui-card">
+					<div class="layui-card-header"></div>
+					<div class="layui-card-body">
+						<form class="layui-form" action="" lay-filter="user_form" id="user_form">
+							<input type="text" name="id" id="uid" style="display: none">
+							<div class="layui-form-item">
+								<label class="layui-form-label">父级菜单</label>
+								<div class="layui-input-block">
+									<input type="text" name="username" lay-verify="username" autocomplete="off" placeholder="用户名"
+										   class="layui-input">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">名称</label>
+								<div class="layui-input-block">
+									<input type="text" name="factory" lay-verify="title" autocomplete="off" placeholder="请选择所属单位"
+										   class="layui-input">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">地址</label>
+								<div class="layui-input-block">
+									<input type="text" name="email" lay-verify="email" autocomplete="off" placeholder="请输入邮箱"
+										   class="layui-input">
+								</div>
+							</div>
+
+							<div class="layui-form-item">
+								<label class="layui-form-label">图标</label>
+								<div class="layui-input-block">
+									<input type="text" name="mobile" lay-verify="mobile" autocomplete="off" placeholder="请输入手机号"
+										   class="layui-input">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">排序级别</label>
+								<div class="layui-input-block">
+									<input type="text" name="nickname" lay-verify="nickname" autocomplete="off" placeholder="请输入昵称"
+										   class="layui-input">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">描述</label>
+								<div class="layui-input-block">
+									<input type="text" name="mobile" lay-verify="mobile" autocomplete="off" placeholder="请输入手机号"
+										   class="layui-input">
+								</div>
+							</div>
+						</form>
 					</div>
 				</div>
 			</div>
@@ -34,95 +87,31 @@
 			index : 'lib/index' //主入口模块
 		}).use([ 'index', 'eleTree','table','jquery' ], function() {
 			var eleTree = layui.eleTree;
-			var table = layui.table;
-			var $ = layui.jquery
-			table.render({
-				elem: '#user-table',
-				request: {
-					pageName: 'current',
-					limitName: 'size'
-				},
-				url: '/user/list',
-				cols: [
-					[
-						{checkbox: true, fixed: true}
-						, {field: 'id', title: 'id', width: 80, sort: true, fixed: true}
-						, {field: 'username', title: '用户名'}
-						, {field: 'nickname', title: '昵称'}
-						, {field: 'headimg', title: '头像'}
-						, {field: 'moboile', title: '手机号'}
-						, {field: 'userIp', title: 'IP地址'}
-						, {field: 'email', title: '邮箱'}
-						, {field: 'type', title: '所属单位'}
-					]
-				]
-				, totalRow: false
-				, page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
-					layout: ['count', 'prev', 'page', 'next', 'skip','limit'] //自定义分页布局
-					//,curr: 5 //设定初始在第 5 页
-					,limits:[10,15,20]
-					, groups: 5 //只显示 1 个连续页码
-					, first: false //不显示首页
-					, last: false //不显示尾页
-
-				}
-				, parseData: function (res) {
-					var data = res;
-					return {
-						"code": '0', //解析接口状态
-						"msg": '返回成功', //解析提示文本
-						"count": res.total, //解析数据长度
-						"data": res.records //解析数据列表
-					};
-				}
-			})
-
-			//监听行单击事件（双击事件为：rowDouble）
-			table.on('row(user-table)', function(obj){
-				var data = obj.data;
-
-				// layer.alert(JSON.stringify(data), {
-				// 	title: '当前行数据：'
-				// });
-				$.ajax({
-					url:'/role/treeList',
-					data:{
-						id:data.id
-					},
-					dataType:'json',
-					success:function (data){
-						console.log(data);
-						var arr = [];
-						roleTree.unCheckNodes();
-						$.each(data.data,function (index,item){
-							arr.push(item.id)
-						})
-						roleTree.setChecked(arr,true);
-					}
-				})
-
-				//标注选中样式
-				obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
-			});
-
-			$('.user-table-query .layui-btn').on('click', function () {
-				table.reload('user-table', {
-					page: {
-						curr: 1 //重新从第 1 页开始
-					}
-				});
-			});
-
-
+			var $ = layui.jquery;
 			var permissionTree = eleTree.render({
 				elem : '.permissionTree',
 				url : '/prmission/menuByRole',
 				where:{
 					'userid':0
 				},
-				showCheckbox:true,
-				defaultExpandAll:true,
-				//checkStrictly:true,
+				emptText: "暂无数据",        // 内容为空的时候展示的文本
+				renderAfterExpand: true,    // 是否在第一次展开某个树节点后才渲染其子节点
+				highlightCurrent: true,    // 是否高亮当前选中节点，默认值是 false。
+				defaultExpandAll: true,    // 是否默认展开所有节点
+				expandOnClickNode: false,    // 是否在点击节点的时候展开或者收缩节点， 默认值为 true，如果为 false，则只有点箭头图标的时候才会展开或者收缩节点。
+				//checkOnClickNode: false,    // 是否在点击节点的时候选中节点，默认值为 false，即只有在点击复选框时才会选中节点。
+				autoExpandParent: true,     // 展开子节点的时候是否自动展开父节点
+				showCheckbox: true,        // 节点是否可被选择
+				checkStrictly: false,       // 在显示复选框的情况下，是否严格的遵循父子不互相关联的做法，默认为 false
+				defaultCheckedKeys: [],     // 默认勾选的节点的 key 的数组
+				accordion: false,           // 是否每次只打开一个同级树节点展开（手风琴效果）
+				indent: 16,                 // 相邻级节点间的水平缩进，单位为像素
+				lazy: false,                // 是否懒加载子节点，需与 load 方法结合使用
+				load: function() {},        // 加载子树数据的方法，仅当 lazy 属性为true 时生效
+				draggable: false,           // 是否开启拖拽节点功能
+				contextmenuList: [],        // 启用右键菜单，支持的操作有："copy","add","edit","remove"
+				searchNodeMethod: null,     // 对树节点进行筛选时执行的方法，返回 true 表示这个节点可以显示，返回 false 则表示这个节点会被隐藏
+				showLine: true,            // 是否显示连线，默认false
 				request: {
 			        name: "name",
 			        key: "id",
@@ -133,28 +122,12 @@
 			    }
 			});
 
-			eleTree.on("nodeClick(data1)",function(d) {
-				console.log(d.data);    // 点击节点对应的数据
-				console.log(d.event);   // event对象
-				console.log(d.node);    // 点击的dom节点
-				console.log(this);      // 与d.node相同
+			eleTree.on("nodeClick(permissionTree)",function(d) {
+				console.log(d.data.currentData.name);    // 点击节点对应的数据
+				//console.log(d.event);   // event对象
+				//console.log(d.node);    // 点击的dom节点
+				//console.log(this);      // 与d.node相同
 			})
-
-			var roleTree = eleTree.render({
-				elem : '.roleTree',
-				url : '/role/treeList',
-				showCheckbox:true,
-				defaultExpandAll:true,
-				request: {
-					name: "roleName",
-					key: "id",
-					children: "child",
-					checked: "checked",
-					disabled: "disabled",
-					isLeaf: "isLeaf"
-				}
-			});
-
 		});
 	</script>
 </body>

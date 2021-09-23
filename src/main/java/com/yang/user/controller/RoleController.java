@@ -6,8 +6,10 @@ import java.util.Map;
 import org.apache.commons.collections4.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yang.pojo.BaseParameter;
@@ -22,6 +24,13 @@ public class RoleController {
 	@Autowired
 	private IRoleService service;
 
+	@RequestMapping("/roleManage")
+	@ResponseBody
+	public ModelAndView roleManage(Model model) {
+		ModelAndView view = new ModelAndView("permission/role");
+		return view;
+	}
+	
 	@RequestMapping("/list")
 	@ResponseBody
 	public String list(BaseParameter<Role> param) {
@@ -37,6 +46,8 @@ public class RoleController {
 		map.put("data", list);
 		return JSONObject.toJSONString(map);
 	}
+	
+	
 	
 	
 
