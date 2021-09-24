@@ -40,4 +40,9 @@
            p1.id = #{id}
        </where>
     </select>
+    
+    <insert id="rpSave" parameterType="java.util.Map">
+    	INSERT INTO role_permission (role_id,permit_id) VALUES (#{rid},#{pid})
+    </insert>
+
 </mapper>

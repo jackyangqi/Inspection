@@ -1,5 +1,6 @@
 package com.yang.user.controller;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -122,9 +123,15 @@ public class PermissionController {
 	@RequestMapping("/rpSave")
 	@ResponseBody
 	public String rpSave(int rid,int pid) {
-		System.out.println(rid);
-		System.out.println(pid);
-		return "";
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("rid", rid);
+		map.put("pid", pid);
+		boolean b = permissionService.rpSave(map);
+		System.out.println(b);
+		if(b) {
+			return ResponseData.result(b, "添加菜单成功");
+		}
+		return ResponseData.error("添加失败");
 	}
 	@RequestMapping("/rpDelete")
 	@ResponseBody

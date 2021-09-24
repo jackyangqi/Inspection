@@ -3,6 +3,7 @@ package com.yang.user.service.impl;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -79,6 +80,11 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
 		wrapper.orderByAsc("zindex");
 		List<Permission> list = permissionMapper.selectList(wrapper);
 		return list;
+	}
+
+	@Override
+	public boolean rpSave(Map<String, Integer> map) {		
+		return permissionMapper.rpSave(map);
 	}
 
 }

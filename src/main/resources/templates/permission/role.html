@@ -52,10 +52,11 @@
         base: '/layuiadmin/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['index', 'eleTree', 'table', 'jquery'], function () {
+    }).use(['index', 'eleTree', 'table', 'jquery','layer'], function () {
         var eleTree = layui.eleTree;
         var table = layui.table;
         var $ = layui.jquery
+        var layer = layui.layer
 
 
         var roleTree = eleTree.render({
@@ -97,11 +98,13 @@
             }
         });
         eleTree.on("nodeChecked(permissionTree)", function (d) {
-            //console.log(d.data);    // 点击节点对应的数据
-            console.log(d.isChecked);   // input是否被选中
             var url = '/permission/';
-            var rid = roleTree.getChecked(false, false)[0].id;
-            console.log(rid)
+            var ridArr = roleTree.getChecked(false, false);
+            if(ridArr.length==0){
+                layer.msg('请先勾选角色');
+                return;
+            }
+            var rid = ridArr[0].id
             var pid = d.data.currentData.id;
             if (d.isChecked) {
                 url += 'rpSave';
@@ -118,7 +121,7 @@
                 type: "POST",
                 dataType: 'json',
                 success: function (data) {
-                    //layer.msg(data.msg);
+                    layer.msg(data.msg);
                 }
             })
         })
@@ -147,6 +150,8 @@
         eleTree.on("nodeChecked(roleTree)", function (d) {
             if (d.isChecked) {
                 roleTree.setChecked([d.data.currentData.id], true)
+            }else{
+                //permissionTree.setChecked([], true);
             }
         })
 

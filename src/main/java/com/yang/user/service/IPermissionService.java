@@ -1,6 +1,7 @@
 package com.yang.user.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yang.user.entity.Permission;
@@ -27,5 +28,7 @@ public interface IPermissionService extends IService<Permission> {
 	public Permission findById(int id);
 	
 	public List<Permission> list();
+	
+	public boolean rpSave(Map<String, Integer> map);
 
 }
