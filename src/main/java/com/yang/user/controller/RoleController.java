@@ -47,6 +47,16 @@ public class RoleController {
 		return JSONObject.toJSONString(map);
 	}
 	
+	@RequestMapping("/roleAllTree")
+	@ResponseBody
+	public String roleAllTree() {
+		List<Role> list = service.list();
+		Map<String, Object> map = new HashedMap<String, Object>();
+		map.put("code", 0);
+		map.put("data", list);
+		return JSONObject.toJSONString(map);
+	}
+	
 	
 	
 	

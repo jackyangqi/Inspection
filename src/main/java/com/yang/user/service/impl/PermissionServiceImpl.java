@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yang.user.entity.Permission;
 import com.yang.user.entity.Role;
@@ -64,6 +65,20 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
 		list.add(role.getId());
 		List<Permission> permissionList = permissionMapper.findPermissionByRole(list);
 		return permissionList;
+	}
+
+	@Override
+	public Permission findById(int id) {
+		Permission permission = permissionMapper.findById(id);
+		return permission;
+	}
+
+	@Override
+	public List<Permission> list() {
+		QueryWrapper<Permission> wrapper = new QueryWrapper<Permission>();
+		wrapper.orderByAsc("zindex");
+		List<Permission> list = permissionMapper.selectList(wrapper);
+		return list;
 	}
 
 }

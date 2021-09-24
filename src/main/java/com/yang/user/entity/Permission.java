@@ -3,6 +3,7 @@ package com.yang.user.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -67,12 +68,11 @@ public class Permission implements Serializable {
     /**
      * 添加时间
      */
-    private LocalDateTime insertTime;
+    private Date insertTime;
 
     /**
      * 更新时间
      */
-    private LocalDateTime updateTime;
-
+    private Date updateTime;
 
 }
