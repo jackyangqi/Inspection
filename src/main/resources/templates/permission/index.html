@@ -1,148 +1,222 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<title>权限管理</title>
-<meta name="renderer" content="webkit">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
-<link rel="stylesheet" href="/layuiAdmin/layui/css/layui.css"
-	media="all">
-<link rel="stylesheet" href="/layuiAdmin/style/admin.css" media="all">
-<link rel="stylesheet" href="/layuiAdmin/style/eleTree.css" media="all">
+    <meta charset="utf-8">
+    <title>权限管理</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/layuiAdmin/layui/css/layui.css"
+          media="all">
+    <link rel="stylesheet" href="/layuiAdmin/style/admin.css" media="all">
+    <link rel="stylesheet" href="/layuiAdmin/style/eleTree.css" media="all">
 </head>
 <body>
-	<div class="layui-fluid">
-		<div class="layui-row layui-col-space15">
-			<div class="layui-col-md5">
-				<div class="layui-card">
-					<div class="layui-card-header">权限菜单</div>
-					<div class="layui-card-body">
-						<div class="permissionTree" lay-filter="permissionTree"></div>
-					</div>
-				</div>
-			</div>
-			<div class="layui-col-md7">
-				<div class="layui-card">
-					<div class="layui-card-header"></div>
-					<div class="layui-card-body">
-						<form class="layui-form" action="" lay-filter="permission_form" id="permission_form">
-							<input type="text" name="id" id="uid" style="display: none;">
-							<div class="layui-form-item">
-								<label class="layui-form-label">父级菜单</label>
-								<div class="layui-input-block">
-									<input disabled type="text" name="pname" lay-verify="pname" autocomplete="off" placeholder=""
-										   class="layui-input">
-								</div>
-							</div>
-							<div class="layui-form-item">
-								<label class="layui-form-label">名称</label>
-								<div class="layui-input-block">
-									<input type="text" name="name" lay-verify="name" autocomplete="off" placeholder="请输入菜单名称"
-										   class="layui-input">
-								</div>
-							</div>
-							<div class="layui-form-item">
-								<label class="layui-form-label">请求地址</label>
-								<div class="layui-input-block">
-									<input type="text" name="page" lay-verify="page" autocomplete="off" placeholder="请输入请求地址"
-										   class="layui-input">
-								</div>
-							</div>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md5">
+            <div class="layui-card">
+                <div class="layui-card-header">权限菜单
 
-							<div class="layui-form-item">
-								<label class="layui-form-label">图标</label>
-								<div class="layui-input-block">
-									<input type="text" name="icon" lay-verify="icon" autocomplete="off" placeholder="请选择图标"
-										   class="layui-input">
-								</div>
-							</div>
-							<div class="layui-form-item">
-								<label class="layui-form-label">排序级别</label>
-								<div class="layui-input-block">
-									<input type="text" name="zindex" lay-verify="zindex" autocomplete="off" placeholder="请输入排序级别"
-										   class="layui-input">
-								</div>
-							</div>
-							<div class="layui-form-item">
-								<label class="layui-form-label">描述</label>
-								<div class="layui-input-block">
-									<input type="text" name="descpt" lay-verify="descpt" autocomplete="off" placeholder="请输入描述内容"
-										   class="layui-input">
-								</div>
-							</div>
-							<div class="layui-form-item">
-								<label class="layui-form-label"></label>
-								<button type="button" id="prmSubBtn" class="layui-btn">修改</button>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
+                </div>
+                <div class="layui-card-body">
+                    <div class="permissionTree" lay-filter="permissionTree"></div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md7">
+            <div class="layui-card">
+                <div class="layui-card-header" id="form_header">
+                    <div id="addPermissionBtn_txt" style="float: left">编辑菜单</div>
+                    <div id="addPermissionBtn_div" style="float: right; margin-right: 10px; display: none">
+                        <button id="addPermissionBtn" type="button" class="layui-btn">新增</button>
+                    </div>
+                </div>
+                <div class="layui-card-body">
+                    <form class="layui-form" action="" lay-filter="permission_form" id="permission_form">
+                        <input type="text" name="id" id="pid" style="display: none;">
+                        <input type="text" name="pid" id="ppid" style="display: none;">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">父级菜单</label>
+                            <div class="layui-input-block">
+                                <input disabled type="text" name="pname" lay-verify="pname" autocomplete="off"
+                                       placeholder=""
+                                       class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item" id="pcType_div" style="display: none">
+                            <label class="layui-form-label">子菜单</label>
+                            <div class="layui-input-block">
+                                <input type="checkbox" name="pcType" lay-filter="pcType" value="1" checked=checked
+                                       lay-skin="switch" lay-text="是|否">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">名称</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="name" lay-verify="name" autocomplete="off"
+                                       placeholder="请输入菜单名称"
+                                       class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">请求地址</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="page" lay-verify="page" autocomplete="off"
+                                       placeholder="请输入请求地址"
+                                       class="layui-input">
+                            </div>
+                        </div>
 
-	</div>
-	<script src="/layuiAdmin/layui/layui.js?t=1"></script>
-	<script>
-		layui.config({
-			base : '/layuiadmin/' //静态资源所在路径
-		}).extend({
-			index : 'lib/index' //主入口模块
-		}).use([ 'index', 'eleTree','table','jquery','form' ], function() {
-			var eleTree = layui.eleTree,form = layui.form;
-			var $ = layui.jquery;
-			var permissionTree = eleTree.render({
-				elem : '.permissionTree',
-				url : '/permission/permissionAllTree',
-				emptText: "暂无数据",        // 内容为空的时候展示的文本
-				renderAfterExpand: true,    // 是否在第一次展开某个树节点后才渲染其子节点
-				highlightCurrent: true,    // 是否高亮当前选中节点，默认值是 false。
-				defaultExpandAll: true,    // 是否默认展开所有节点
-				expandOnClickNode: false,    // 是否在点击节点的时候展开或者收缩节点， 默认值为 true，如果为 false，则只有点箭头图标的时候才会展开或者收缩节点。
-				showCheckbox: true,        // 节点是否可被选择
-				showLine: true,            // 是否显示连线，默认false
-				request: {
-			        name: "name",
-			        key: "id",
-			        children: "child",
-			        checked: "checked",
-			        disabled: "disabled",
-			        isLeaf: "isLeaf"
-			    }
-			});
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">图标</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="icon" lay-verify="icon" autocomplete="off" placeholder="请选择图标"
+                                       class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">排序级别</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="zindex" lay-verify="zindex" autocomplete="off"
+                                       placeholder="请输入排序级别"
+                                       class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">描述</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="descpt" lay-verify="descpt" autocomplete="off"
+                                       placeholder="请输入描述内容"
+                                       class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label"></label>
+                            <button type="button" id="prmSubBtn" class="layui-btn">提交</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
-			eleTree.on("nodeClick(permissionTree)",function(d) {
-				console.log(d.data.parentData.data.name);    // 点击节点对应的数据
-				$.ajax({
-					url:'/permission/findById',
-					data:{
-						id:d.data.currentData.id
-					},
-					dataType : 'json',
-					success:function (data){
-						$("input[name='pname']").val(d.data.parentData.data.name)
-						form.val("permission_form", data.data);
-					}
-				})
-			})
+</div>
+<script src="/layuiAdmin/layui/layui.js?t=1"></script>
+<script>
+    layui.config({
+        base: '/layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'eleTree', 'table', 'jquery', 'form'], function () {
+        var eleTree = layui.eleTree, form = layui.form;
+        var $ = layui.jquery;
+        var permissionTree = eleTree.render({
+            elem: '.permissionTree',
+            url: '/permission/permissionAllTree',
+            emptText: "暂无数据",        // 内容为空的时候展示的文本
+            renderAfterExpand: true,    // 是否在第一次展开某个树节点后才渲染其子节点
+            highlightCurrent: true,    // 是否高亮当前选中节点，默认值是 false。
+            defaultExpandAll: true,    // 是否默认展开所有节点
+            expandOnClickNode: false,    // 是否在点击节点的时候展开或者收缩节点， 默认值为 true，如果为 false，则只有点箭头图标的时候才会展开或者收缩节点。
+            showCheckbox: true,        // 节点是否可被选择
+            showLine: true,            // 是否显示连线，默认false
+            checkStrictly: true,
+            request: {
+                name: "name",
+                key: "id",
+                children: "child",
+                checked: "checked",
+                disabled: "disabled",
+                isLeaf: "isLeaf"
+            }
+        });
 
-			$("#prmSubBtn").on('click',function (){
-				$.ajax({
-					url:'/permission/update',
-					data: $('#permission_form').serialize(),
-					type: "POST",
-					dataType : 'json',
-					success:function (data){
-						layer.msg(data.msg);
-						permissionTree.reload();
-					}
-				})
-			})
+        eleTree.on("nodeClick(permissionTree)", function (d) {
+            permissionTree.setChecked([d.data.currentData.id], true);
+            $('#addPermissionBtn_txt').html('编辑菜单')
+            console.log(d.data.parentData.data.name);    // 点击节点对应的数据
+            $('#addPermissionBtn_div').show();
+            $('#pcType_div').hide();
+            $.ajax({
+                url: '/permission/findById',
+                data: {
+                    id: d.data.currentData.id
+                },
+                dataType: 'json',
+                success: function (data) {
+                    $("input[name='pname']").val(d.data.parentData.data.name)
+                    form.val("permission_form", data.data);
+                }
+            })
+        })
+        eleTree.on("nodeChecked(permissionTree)", function (d) {
+            if (d.isChecked) {
+                permissionTree.setChecked([d.data.currentData.id], true)
+            }
+        })
+
+        $("#prmSubBtn").on('click', function () {
+
+            console.log(permissionTree.getChecked())
+            if(permissionTree.getChecked()==undefined){
+                layer.msg('请选择菜单，再进行保存')
+                return;
+            }
+            //var perid = permissionTree.getChecked()[0].id;
+            $.ajax({
+                url: '/permission/update',
+                data: $('#permission_form').serialize(),
+                type: "POST",
+                dataType: 'json',
+                success: function (data) {
+                    layer.msg(data.msg);
+                    permissionTree.setChecked([],true);
+                    permissionTree.reload();
+                }
+            })
+        })
+
+        /**
+         * 新增按钮事件
+         */
+        $('#addPermissionBtn').on('click', function () {
+            $('#pcType_div').show();
+            //var ppid = $('#ppid').val();
+            var pid = $('#pid').val();
+            var pname = $("input[name='pname']").val();
+            $('#permission_form')[0].reset();
+            $('#ppid').val(pid);
+            if (ppid == 0) {
+                $("input[name='pname']").val('顶级菜单');
+            } else {
+                $("input[name='pname']").val(pname);
+            }
+            $('#addPermissionBtn_txt').html('新增菜单')
+            $('#pid').val(0);
+        })
+        /**
+         * 子菜单开关事件
+         */
+        form.on('switch(pcType)', function (obj) {
+            var pcType = $("input[name='pcType']")
+            if (obj.elem.checked) {
+                pcType.val(1)
+                if (permissionTree.getChecked().length > 1) {
+                    layer.msg('请勾选一个菜单');
+                    return
+                }
+				$('#ppid').val( permissionTree.getChecked()[0].id)
+            }else{
+                pcType.val(0)
+				$('#ppid').val(0)
+			}
+        });
 
 
-		});
-	</script>
+    });
+</script>
 </body>
 </html>
 

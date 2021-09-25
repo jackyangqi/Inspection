@@ -1,5 +1,6 @@
 package com.yang.user.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -55,8 +56,21 @@ public class PermissionController {
 
 	@RequestMapping("/update")
 	@ResponseBody
-	public String update(Permission permission) {
-		
+	public String update(Permission permission,String pcType) {
+		System.out.println(pcType);
+		if(permission.getId()==0) {
+			if(!"1".equals(pcType)) {
+				permission.setPid(permission.getId());
+			}
+			permission.setInsertTime(new Date());
+			permission.setIstype(1);
+			boolean b = permissionService.save(permission);
+			if(b) {
+				return ResponseData.result(true,"新增菜单成功");
+			}else {
+				return ResponseData.error("error");
+			}
+		}
 		Permission temp = permissionService.getById(permission);
 		if(temp==null) {
 			return ResponseData.error("error");
