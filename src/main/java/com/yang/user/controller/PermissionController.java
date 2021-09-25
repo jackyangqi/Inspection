@@ -159,9 +159,15 @@ public class PermissionController {
 	@RequestMapping("/rpDelete")
 	@ResponseBody
 	public String rpDelete(int rid,int pid) {
-		System.out.println(rid);
-		System.out.println(pid);
-		return "";
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("rid", rid);
+		map.put("pid", pid);
+		boolean b = permissionService.rpDelete(map);
+		System.out.println(b);
+		if(b) {
+			return ResponseData.result(b, "删除菜单成功");
+		}
+		return ResponseData.error("删除失败");
 	}
 	
 	

@@ -44,5 +44,8 @@
     <insert id="rpSave" parameterType="java.util.Map">
     	INSERT INTO role_permission (role_id,permit_id) VALUES (#{rid},#{pid})
     </insert>
+    <delete id="rpDelete" parameterType="java.util.Map">
+        delete from role_permission where role_id=#{rid} and permit_id=#{pid}
+    </delete>
 
 </mapper>

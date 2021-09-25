@@ -87,4 +87,9 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
 		return permissionMapper.rpSave(map);
 	}
 
+	@Override
+	public boolean rpDelete(Map<String, Integer> map) {
+		return permissionMapper.rpDelete(map);
+	}
+
 }

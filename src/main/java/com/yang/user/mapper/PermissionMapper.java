@@ -22,4 +22,5 @@ public interface PermissionMapper extends BaseMapper<Permission> {
 	public Permission findById(int id);
 	
 	public boolean rpSave(Map<String, Integer> map);
+	public boolean rpDelete(Map<String, Integer> map);
 }

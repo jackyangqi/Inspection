@@ -30,5 +30,7 @@ public interface IPermissionService extends IService<Permission> {
 	public List<Permission> list();
 	
 	public boolean rpSave(Map<String, Integer> map);
+	
+	public boolean rpDelete(Map<String, Integer> map);
 
 }
