@@ -17,8 +17,11 @@
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md5">
             <div class="layui-card">
-                <div class="layui-card-header">权限菜单
-
+                <div class="layui-card-header">
+                    <div id="delPermissionBtn_txt" style="float: left">权限菜单</div>
+                    <div id="delPermissionBtn_div" style="float: right; margin-right: 10px; display: block">
+                        <button id="delPermissionBtn" type="button" class="layui-btn">删除</button>
+                    </div>
                 </div>
                 <div class="layui-card-body">
                     <div class="permissionTree" lay-filter="permissionTree"></div>
@@ -160,7 +163,7 @@
         $("#prmSubBtn").on('click', function () {
 
             console.log(permissionTree.getChecked())
-            if(permissionTree.getChecked()==undefined){
+            if (permissionTree.getChecked() == undefined) {
                 layer.msg('请选择菜单，再进行保存')
                 return;
             }
@@ -172,7 +175,7 @@
                 dataType: 'json',
                 success: function (data) {
                     layer.msg(data.msg);
-                    permissionTree.setChecked([],true);
+                    permissionTree.setChecked([], true);
                     permissionTree.reload();
                 }
             })
@@ -196,6 +199,26 @@
             $('#addPermissionBtn_txt').html('新增菜单')
             $('#pid').val(0);
         })
+        $('#delPermissionBtn').on('click', function () {
+            console.log(permissionTree.getChecked())
+            if (permissionTree.getChecked() == undefined) {
+                layer.msg('请选择菜单，再进行保存')
+                return;
+            }
+            $.ajax({
+                url: '/permission/delete',
+                data: {
+                    id: permissionTree.getChecked()[0].id
+                },
+                type: "POST",
+                dataType: 'json',
+                success: function (data) {
+                    layer.msg(data.msg);
+                    permissionTree.setChecked([], true);
+                    permissionTree.reload();
+                }
+            })
+        })
         /**
          * 子菜单开关事件
          */
@@ -207,11 +230,11 @@
                     layer.msg('请勾选一个菜单');
                     return
                 }
-				$('#ppid').val( permissionTree.getChecked()[0].id)
-            }else{
+                $('#ppid').val(permissionTree.getChecked()[0].id)
+            } else {
                 pcType.val(0)
-				$('#ppid').val(0)
-			}
+                $('#ppid').val(0)
+            }
         });
 
 

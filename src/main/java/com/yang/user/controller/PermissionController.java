@@ -82,6 +82,15 @@ public class PermissionController {
 		}
 		return ResponseData.error("error");
 	}
+	@RequestMapping("/delete")
+	@ResponseBody
+	public String delete(int id) {
+		boolean b = permissionService.removeById(id);
+		if(b) {
+			return ResponseData.result(true,"删除成功");
+		}
+		return ResponseData.error("error");
+	}
 
 	@RequestMapping("/menuByRole")
 	@ResponseBody
